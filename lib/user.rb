@@ -2,7 +2,7 @@ require 'httparty'
 
 class User
 
-  def initizalize token
+  def initialize token
     @token = token
   end
 
