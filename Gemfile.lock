@@ -1,5 +1,6 @@
 GEM
   specs:
+    flickraw (0.9.8)
     haml (4.0.5)
       tilt
     rack (1.5.2)
@@ -15,5 +16,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  flickraw
   haml
   sinatra
