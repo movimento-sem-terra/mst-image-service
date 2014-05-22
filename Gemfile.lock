@@ -5,6 +5,7 @@ GIT
     flickraw (0.9.8)
 
 GEM
+  remote: http://rubygems.org/
   specs:
     haml (4.0.5)
       tilt
