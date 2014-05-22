@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'haml'
-require_relative 'lib/flick.rb'
+require_relative 'lib/flickr.rb'
 require_relative 'lib/user.rb'
  
 get "/upload" do
@@ -9,11 +9,10 @@ end
 
 post "/upload" do 
   
-  token = params['token']
-  user  = User.new token
+  token = params['token'] || ''
+  user  = User.new(token)
 
-  return "U don't have access bro." if user.authorized?
-
+  return "U don't have access bro." unless user.authorized?
 
   path = Dir.mktmpdir('upload')
   name_file = params['myfile'][:filename]
