@@ -1,6 +1,11 @@
-GEM
+GIT
+  remote: git://github.com/hanklords/flickraw.git
+  revision: e9964ba7f594cd45631171587c8404c14b8e1cc6
   specs:
     flickraw (0.9.8)
+
+GEM
+  specs:
     haml (4.0.5)
       tilt
     rack (1.5.2)
@@ -16,6 +21,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  flickraw
+  flickraw!
   haml
   sinatra
