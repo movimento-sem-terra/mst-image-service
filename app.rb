@@ -10,6 +10,13 @@ before do
     headers['Access-Control-Allow-Credentials'] = 'true'
 end
 
+options "*" do
+    response.headers["Allow"] = "HEAD,GET,PUT,DELETE,OPTIONS"
+
+    response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+    halt HTTP_STATUS_OK
+end
+
 get "/upload" do
   haml :upload
 end      
