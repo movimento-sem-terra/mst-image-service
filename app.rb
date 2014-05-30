@@ -2,7 +2,14 @@ require 'sinatra'
 require 'haml'
 require_relative 'lib/flickr.rb'
 require_relative 'lib/user.rb'
- 
+
+before do
+    headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    headers['Access-Control-Allow-Origin'] = 'http://localhost:8000'
+    headers['Access-Control-Allow-Headers'] = 'accept, authorization, origin'
+    headers['Access-Control-Allow-Credentials'] = 'true'
+end
+
 get "/upload" do
   haml :upload
 end      
