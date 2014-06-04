@@ -8,8 +8,8 @@ gem 'flickraw', github:'hanklords/flickraw'
 gem 'httparty'
 
 group :test do 
-  gem "mocha"
-  gem "activesupport"
-  gem "pry"
-  gem "pry-nav"
+  gem 'mocha'
+  gem 'activesupport'
+  gem 'pry'
+  gem 'pry-nav'
 end

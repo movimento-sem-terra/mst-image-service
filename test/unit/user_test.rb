@@ -1,53 +1,42 @@
 require_relative '../test_helper.rb'
 require_relative '../../lib/user.rb'
-require 'httparty'
 
 class UserTest < ActiveSupport::TestCase
+
   setup  do
+    ENV['REPO_ID'] = '23'
     @token = 'lalalala'
     @user = User.new @token
   end
 
-  test 'should return true when have the repo id inside orgs' do
-    response = [{"id" => 12},{"id" => 20},{"id" => 23}]
+  test 'is authorized when having the repo id among his orgs' do
+    response = [{'id' => 12}, {'id' => 20}, {'id' => 23}]
     HTTParty.stubs(:get).returns(response)
-    
-    ENV['REPO_ID'] = '23'
-    
     assert @user.authorized?
   end
 
-  test 'should return false when do not have the repo id inside orgs' do
-    response = [{"id" => 12},{"id" => 20},{"id" => 23}]
+  test 'is not authorized when not having the repo id among his orgs' do
+    response = [{'id' => 12}, {'id' => 20}, {'id' => 45}]
     HTTParty.stubs(:get).returns(response)
-    
-    ENV['REPO_ID'] = '45'
-    
-    assert @user.authorized? == false
+    assert !@user.authorized?
   end
 
-  test 'should return false when the response is empty or nil' do
-    ENV['REPO_ID'] = '45'
-
-    response = nil
-    HTTParty.stubs(:get).returns(response)
-    assert @user.authorized? == false
-
-    response = ''
-    HTTParty.stubs(:get).returns(response)
-    assert @user.authorized? == false
+  test 'is not authorized when the response is nil' do
+    HTTParty.stubs(:get).returns(nil)
+    assert !@user.authorized?
   end
 
-
-  test 'should return false when the response is a bad credential' do
-    ENV['REPO_ID'] = '45'
-
-    response = [{message:'Bad Credential'}]
-    HTTParty.stubs(:get).returns(response)
-    assert @user.authorized? == false
-
-    response = {message:'Bad bad'}
-    HTTParty.stubs(:get).returns(response)
-    assert @user.authorized? == false
+  test 'is not authorized when the response is empty' do
+    HTTParty.stubs(:get).returns('')
+    assert !@user.authorized?
   end
+
+  test 'is not authorized when providing bad credentials' do
+    HTTParty.stubs(:get).returns([{message:'Bad Credential'}])
+    assert !@user.authorized?
+
+    HTTParty.stubs(:get).returns({message:'Bad bad'})
+    assert !@user.authorized?
+  end
+
 end
