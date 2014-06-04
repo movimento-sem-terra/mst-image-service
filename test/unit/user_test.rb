@@ -1,6 +1,5 @@
 require_relative '../test_helper.rb'
 require_relative '../../lib/user.rb'
-require 'httparty'
 
 class UserTest < ActiveSupport::TestCase
 
