@@ -3,12 +3,13 @@ require_relative '../../lib/user.rb'
 require 'httparty'
 
 class UserTest < ActiveSupport::TestCase
+
   setup  do
     @token = 'lalalala'
     @user = User.new @token
   end
 
-  test 'should return true when have the repo id inside orgs' do
+  test 'is authorized when having the repo id among his orgs' do
     response = [{'id' => 12},{'id' => 20},{'id' => 23}]
     HTTParty.stubs(:get).returns(response)
     
@@ -17,7 +18,7 @@ class UserTest < ActiveSupport::TestCase
     assert @user.authorized?
   end
 
-  test 'should return false when do not have the repo id inside orgs' do
+  test 'is not authorized when not having the repo id among his orgs' do
     response = [{'id' => 12},{'id' => 20},{'id' => 23}]
     HTTParty.stubs(:get).returns(response)
     
@@ -26,20 +27,23 @@ class UserTest < ActiveSupport::TestCase
     assert !@user.authorized?
   end
 
-  test 'should return false when the response is empty or nil' do
+  test 'is not authorized when the response is nil' do
     ENV['REPO_ID'] = '45'
 
     response = nil
     HTTParty.stubs(:get).returns(response)
     assert !@user.authorized?
+  end
+
+  test 'is not authorized when the response is empty' do
+    ENV['REPO_ID'] = '45'
 
     response = ''
     HTTParty.stubs(:get).returns(response)
     assert !@user.authorized?
   end
 
-
-  test 'should return false when the response is a bad credential' do
+  test 'is not authorized when providing bad credentials' do
     ENV['REPO_ID'] = '45'
 
     response = [{message:'Bad Credential'}]
@@ -50,4 +54,5 @@ class UserTest < ActiveSupport::TestCase
     HTTParty.stubs(:get).returns(response)
     assert !@user.authorized?
   end
+
 end
