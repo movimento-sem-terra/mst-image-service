@@ -12,11 +12,8 @@ class User
       "Authorization" => "token #{@token}",
       "User-Agent" => 'Application'
     })
-    unless response.to_s.empty?
-      values = Array(response).flatten
-      (not values.index { |org| org['id'].to_s == ENV['REPO_ID'] }.nil?)
-    else
-      false
+    Array(response).flatten.find do |org|
+      org['id'].to_s == ENV['REPO_ID'] 
     end
   end
 
