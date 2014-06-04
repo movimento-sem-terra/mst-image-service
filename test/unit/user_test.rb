@@ -10,13 +10,13 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'is authorized when having the repo id among his orgs' do
-    response = [{'id' => 12},{'id' => 20},{'id' => 23}]
+    response = [{'id' => 12}, {'id' => 20}, {'id' => 23}]
     HTTParty.stubs(:get).returns(response)
     assert @user.authorized?
   end
 
   test 'is not authorized when not having the repo id among his orgs' do
-    response = [{'id' => 12},{'id' => 20},{'id' => 45}]
+    response = [{'id' => 12}, {'id' => 20}, {'id' => 45}]
     HTTParty.stubs(:get).returns(response)
     assert !@user.authorized?
   end
