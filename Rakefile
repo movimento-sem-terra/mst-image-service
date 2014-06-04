@@ -8,4 +8,5 @@ n = namespace :test do
   end
 end
 
+task :test => [n[:unit]]
 task :default => n[:unit]
