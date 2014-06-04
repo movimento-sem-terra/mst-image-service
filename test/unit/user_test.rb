@@ -33,7 +33,9 @@ class UserTest < ActiveSupport::TestCase
   test 'is not authorized when providing bad credentials' do
     HTTParty.stubs(:get).returns([{message:'Bad Credential'}])
     assert !@user.authorized?
+  end
 
+  test 'is not authorized when providing awful credentials' do
     HTTParty.stubs(:get).returns({message:'Bad bad'})
     assert !@user.authorized?
   end
