@@ -5,8 +5,7 @@ class UserTest < ActiveSupport::TestCase
 
   setup  do
     ENV['REPO_ID'] = '23'
-    @token = 'lalalala'
-    @user = User.new @token
+    @user = User.new('token') 
   end
 
   test 'is authorized when having the repo id among his orgs' do
