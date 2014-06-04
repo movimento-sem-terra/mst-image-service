@@ -10,7 +10,7 @@ class User
     response = HTTParty.get('https://api.github.com/user/orgs', headers: {"Authorization" => "token #{@token}",
                                                                           "User-Agent" => 'Application' })
 
-    if valid? (response)
+    unless response.to_s.empty?
       values = Array(response).flatten
       (not values.index { |org| org['id'].to_s == ENV['REPO_ID'] }.nil?)
     else
@@ -18,10 +18,4 @@ class User
     end
   end
 
-  private
-
-  def valid? response
-    return false if  response.nil? || response.empty?
-    true
-  end
 end
