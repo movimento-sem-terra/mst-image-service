@@ -29,29 +29,23 @@ class UserTest < ActiveSupport::TestCase
 
   test 'is not authorized when the response is nil' do
     ENV['REPO_ID'] = '45'
-
-    response = nil
-    HTTParty.stubs(:get).returns(response)
+    HTTParty.stubs(:get).returns(nil)
     assert !@user.authorized?
   end
 
   test 'is not authorized when the response is empty' do
     ENV['REPO_ID'] = '45'
-
-    response = ''
-    HTTParty.stubs(:get).returns(response)
+    HTTParty.stubs(:get).returns('')
     assert !@user.authorized?
   end
 
   test 'is not authorized when providing bad credentials' do
     ENV['REPO_ID'] = '45'
 
-    response = [{message:'Bad Credential'}]
-    HTTParty.stubs(:get).returns(response)
+    HTTParty.stubs(:get).returns([{message:'Bad Credential'}])
     assert !@user.authorized?
 
-    response = {message:'Bad bad'}
-    HTTParty.stubs(:get).returns(response)
+    HTTParty.stubs(:get).returns({message:'Bad bad'})
     assert !@user.authorized?
   end
 
