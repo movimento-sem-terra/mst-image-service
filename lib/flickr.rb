@@ -3,11 +3,14 @@ require 'flickraw'
 module Service
   class Flickr 
     
+    #app info
     API_KEY = ENV['FLICKR_API_KEY'] 
-    VERIFY_CODE = ENV['FLICKR_VERIFY_CODE']
+    SHARED_SECRET = ENV['FLICKR_SHARED_SECRET']
+
+    #user info
     TOKEN = ENV['FLICKR_TOKEN']
     TOKEN_SECRET = ENV['FLICKR_TOKEN_SECRET']
-    SHARED_SECRET = ENV['FLICKR_SHARED_SECRET']
+    VERIFY_CODE = ENV['FLICKR_VERIFY_CODE']
 
     def initialize(api=nil)
       @api = api || api_service
