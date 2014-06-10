@@ -25,7 +25,7 @@ post "/upload" do
     token = params['token'] || ''
     user  = User.new(token)
 
-    return "U don't have access bro." unless user.authorized?
+    return "U don't have access bro. - #{token}" unless user.authorized?
 
     path = Dir.mktmpdir('upload')
     name_file = params['myfile'][:filename]
