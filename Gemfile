@@ -6,6 +6,7 @@ gem 'haml'
 gem 'rake'
 gem 'flickraw', github:'hanklords/flickraw'
 gem 'httparty'
+gem 'google-api-client'
 
 group :test do 
   gem 'mocha'
