@@ -2,6 +2,7 @@ require 'sinatra'
 require 'haml'
 require_relative 'lib/flickr.rb'
 require_relative 'lib/user.rb'
+require_relative 'lib/google_drive.rb'
 
 before do
   headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
@@ -21,11 +22,11 @@ get "/upload" do
 end      
 
 post "/upload" do   
-  begin
+  begin    
     token = params['token'] || ''
     user  = User.new(token)
 
-    return "U don't have access bro. - #{token}" unless user.authorized?
+    #return "U don't have access bro. - #{token}" unless user.authorized?
 
     path = Dir.mktmpdir('upload')
     name_file = params['myfile'][:filename]
@@ -34,6 +35,9 @@ post "/upload" do
     File.open(file_path, "w") do |f|
       f.write(params['myfile'][:tempfile].read)
     end
+
+    service = Service::GoogleDrive.new     
+    return service.upload file_path
 
     service = Service::Flickr.new 
 
