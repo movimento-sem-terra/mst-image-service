@@ -1,10 +1,4 @@
 %body
-  -@files.each do |file|
-    %h1= file.title
-    %h1= file.webContentLink
-    %h1= file.downloadUrl
-    -file.parents.each do |parent|
-      %h1= parent
   %h1 File uploader!
   %form(method="post" enctype='multipart/form-data')
     %input(type='text' name='token')
