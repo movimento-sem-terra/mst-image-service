@@ -18,8 +18,6 @@ options "*" do
 end
 
 get "/upload" do
-  service = Service::GoogleDrive.new
-  @files = service.retrieve_all_files
   haml :upload
 end
 
