@@ -1,10 +1,10 @@
 require 'flickraw'
 
 module Service
-  class Flickr 
-    
+  class Flickr
+
     #app info
-    API_KEY = ENV['FLICKR_API_KEY'] 
+    API_KEY = ENV['FLICKR_API_KEY']
     SHARED_SECRET = ENV['FLICKR_SHARED_SECRET']
 
     #user info
@@ -17,7 +17,7 @@ module Service
       @api.get_access_token(TOKEN, TOKEN_SECRET, VERIFY_CODE)
     end
 
-    def upload(image_path)
+    def upload(image_path, file_name)
       begin
         photo_id = @api.upload_photo image_path, :title => 'Imagem', :description => 'This is the description'
         info = @api.photos.getInfo(:photo_id => photo_id)

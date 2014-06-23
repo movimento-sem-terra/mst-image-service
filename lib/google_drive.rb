@@ -10,11 +10,11 @@ module Service
       @drive = @drive || @api.discovered_api('drive', 'v2')
     end
 
-    def upload(file_path)
+    def upload(file_path, file_name)
       begin
         file = @drive.files.insert.request_schema.new({
-          'title' => file_path,
-          'description' => file_path,
+          'title' => file_name,
+          'description' => 'post pdf file',
           'mimeType' => 'application/pdf'
           })
 
