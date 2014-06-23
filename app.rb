@@ -18,11 +18,13 @@ options "*" do
 end
 
 get "/upload" do
+  service = Service::GoogleDrive.new
+  @files = service.retrieve_all_files
   haml :upload
-end      
+end
 
-post "/upload" do   
-  begin    
+post "/upload" do
+  begin
     token = params['token'] || ''
     user  = User.new(token)
 
@@ -30,16 +32,17 @@ post "/upload" do
 
     path = Dir.mktmpdir('upload')
     name_file = params['myfile'][:filename]
-    file_path = "#{path}/#{name_file}" 
+    file_path = "#{path}/#{name_file}"
 
     File.open(file_path, "w") do |f|
       f.write(params['myfile'][:tempfile].read)
     end
 
-    service = Service::GoogleDrive.new     
+    service = Service::GoogleDrive.new
+
     return service.upload file_path
 
-    service = Service::Flickr.new 
+    service = Service::Flickr.new
 
     return service.upload file_path
   rescue Exception => e
