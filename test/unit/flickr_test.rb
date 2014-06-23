@@ -20,7 +20,7 @@ class Service::FlickrTest < ActiveSupport::TestCase
 
     FlickRaw.stubs(:url_b).returns( expected_url )
 
-    url = @flickr.upload('/var/tmp/010.jpg') #fake file 
+    url = @flickr.upload('/var/tmp/010.jpg','010.jpg') #fake file
 
     assert_equal url, expected_url
   end
