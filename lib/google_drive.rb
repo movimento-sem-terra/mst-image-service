@@ -5,9 +5,9 @@ require 'launchy'
 module Service
   class GoogleDrive
 
-    def initialize(api=nil)
+    def initialize(api=nil, drive=nil)
       @api = api || api_service
-      @drive = @drive || @api.discovered_api('drive', 'v2')
+      @drive = drive || @api.discovered_api('drive', 'v2')
     end
 
     def upload(file_path, file_name)
@@ -37,7 +37,7 @@ module Service
           :body_object => new_permission,
           :parameters => { 'fileId' => result.data.id })
 
-        result.data.webContentLink
+        result.data
       end
     end
 

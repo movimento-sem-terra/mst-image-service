@@ -35,8 +35,8 @@ post "/upload" do
     File.open(file_path, "w") do |f|
       f.write(params['myfile'][:tempfile].read)
     end
-
-    service =  (File.extname(file_name).downcase == '.pdf') ? Service::GoogleDrive.new : Service::Flickr.new
+    is_pdf = (File.extname(file_name).downcase == '.pdf')
+    service =  is_pdf ? Service::GoogleDrive.new : Service::Flickr.new
 
     return service.upload(file_path, file_name)
 
