@@ -10,6 +10,13 @@ module Service
       @drive = drive || @api.discovered_api('drive', 'v2')
     end
 
+    def list
+      result = @api.execute(
+          :api_method => @drive.files.list,
+          :parameters => {})
+      return result.data.items
+    end
+
     def upload(file_path, file_name)
       begin
         file = @drive.files.insert.request_schema.new({

@@ -1,0 +1,4 @@
+%body
+  %ul
+  - @files.each do |file|
+    %li= "#{file.title} - #{file.createdDate}"
