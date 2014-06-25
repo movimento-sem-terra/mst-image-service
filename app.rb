@@ -45,3 +45,8 @@ post "/upload" do
   end
 end
 
+get "/files" do
+  service = Service::GoogleDrive.new
+  @files = service.list
+  haml :files
+end
