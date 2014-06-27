@@ -8,8 +8,14 @@ class Service::FlickrTest < ActiveSupport::TestCase
     api.stubs( :get_access_token ).returns('token')
     api.stubs( :upload_photo).returns('0101')
 
+    info = stub()
+    info.stubs(:id).returns('')
+    info.stubs(:farm).returns('')
+    info.stubs(:server).returns('')
+    info.stubs(:secret).returns('')
+
     api_photos = mock()
-    api_photos.stubs( :getInfo ).returns( {id:''} )
+    api_photos.stubs( :getInfo ).returns( info )
     api.stubs( :photos ).returns(api_photos)
 
     @flickr = Service::Flickr.new(api)
