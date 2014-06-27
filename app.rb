@@ -39,8 +39,7 @@ post "/upload" do
     is_pdf = (File.extname(file_name).downcase == '.pdf')
     service =  is_pdf ? Service::GoogleDrive.new : Service::Flickr.new
 
-    return service.upload(file_path, file_name)
-
+    json(service.upload(file_path, file_name))
   rescue Exception => e
     return e.message
   end

@@ -34,6 +34,10 @@ module Service
             'uploadType' => 'multipart',
             'alt' => 'json'})
 
+        file = @api.execute(
+          :api_method => @drive.files.get,
+          :parameters => { 'fileId' => result.data.id })
+
         new_permission = @drive.permissions.insert.request_schema.new({
           'role' => 'reader',
           'type' => 'anyone',
@@ -44,7 +48,7 @@ module Service
           :body_object => new_permission,
           :parameters => { 'fileId' => result.data.id })
 
-        result.data.webContentLink
+        {link:result.data.webContentLink, thumbnail: file.data.thumbnail_link}
       end
     end
 
