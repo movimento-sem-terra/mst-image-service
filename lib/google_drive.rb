@@ -48,7 +48,7 @@ module Service
           :body_object => new_permission,
           :parameters => { 'fileId' => result.data.id })
 
-        result.data
+        {link:result.data.webContentLink, thumbnail: result.data.thumbnail_link, title: result.data.title}
       end
     end
 
