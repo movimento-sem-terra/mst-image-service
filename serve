@@ -1,0 +1,8 @@
+#!/bin/bash
+if (( $# != 1 )) 
+	then 
+	echo "Usage: You must provide the Google E-mail Address." 
+	exit 1 
+fi 
+
+GOOGLE_EMAIL_ADDRESS='$1' bundle exec ruby app.rb
