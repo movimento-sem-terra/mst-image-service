@@ -19,7 +19,7 @@ module Service
 
     def upload(image_path, file_name)
       begin
-        photo_id = @api.upload_photo image_path, :title => 'Imagem', :description => 'This is the description'
+        photo_id = @api.upload_photo image_path, :title => file_name, :description => 'This is the description'
         info = @api.photos.getInfo(:photo_id => photo_id)
         large_url = FlickRaw.url_b(info)
         thumbnail_url = FlickRaw.url_t(info)
@@ -27,7 +27,7 @@ module Service
         small_url = FlickRaw.url_n(info)
 
         {link: large_url, thumbnail: thumbnail_url,
-         medium: medium_url, small: small_url }
+         medium: medium_url, small: small_url, title: file_name }
 
       rescue FlickRaw::FailedResponse => e
         "Authentication failed : #{e.msg}"
