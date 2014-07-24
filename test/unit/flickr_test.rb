@@ -29,6 +29,13 @@ class Service::FlickrTest < ActiveSupport::TestCase
     assert url.has_key? :link
   end
 
+  test 'return a json with all links without https' do
+    FlickRaw.stubs(:url_b).returns('https://wwww.xxxx.com')
+    url = @flickr.upload('/var/tmp/010.jpg','010.jpg') #fake file
+
+    assert_match /http:\/\//, url[:thumbnail]
+  end
+
   test 'return url to static image after upload' do
     expected_url = 'http://flick.service/010.jpg'
 

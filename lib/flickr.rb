@@ -26,9 +26,13 @@ module Service
         medium_url = FlickRaw.url_z(info)
         small_url = FlickRaw.url_n(info)
 
-        {link: large_url, thumbnail: thumbnail_url,
+        links = {link: large_url, thumbnail: thumbnail_url,
          medium: medium_url, small: small_url, title: file_name }
 
+        links.inject({}) do |hash, (key,value)|
+          hash[key] = value.gsub('https://','http://')
+          hash
+        end
       rescue FlickRaw::FailedResponse => e
         "Authentication failed : #{e.msg}"
       end
