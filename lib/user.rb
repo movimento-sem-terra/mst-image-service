@@ -8,12 +8,13 @@ class User
   end
 
   def authorized?
+    repos = ENV['REPO_ID'].split ','
     response = HTTParty.get(ORGS_ENDPOINT, headers: {
       'Authorization' => "token #{@token}",
       'User-Agent' => 'Application'
     })
     Array(response).flatten.find do |org|
-      org['id'].to_s == ENV['REPO_ID'] 
+      repos.include? org['id'].to_s
     end
   end
 
