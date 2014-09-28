@@ -5,6 +5,8 @@ require 'launchy'
 module Service
   class GoogleDrive
 
+    PDF_THUMBNAIL = 'http://farm4.staticflickr.com/3852/15187675380_7b00f5fdff_b.jpg'
+
     def initialize(api=nil, drive=nil)
       @api = api || api_service
       @drive = drive || @api.discovered_api('drive', 'v2')
@@ -48,7 +50,7 @@ module Service
           :body_object => new_permission,
           :parameters => { 'fileId' => result.data.id })
 
-        {link:result.data.webContentLink, thumbnail: result.data.thumbnail_link, title: result.data.title}
+        {link:result.data.webContentLink, thumbnail: PDF_THUMBNAIL, title: result.data.title}
       end
     end
 
