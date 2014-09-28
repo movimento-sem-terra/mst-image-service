@@ -57,7 +57,8 @@ module Service
     private
 
     def api_service
-      key = Google::APIClient::KeyUtils.load_from_pkcs12('a0fb8bd517b739e626aff1ed6a0e945d92080cd9-privatekey.p12', 'notasecret')
+      key = OpenSSL::PKey::RSA.new ENV['GOOGLE_API_KEY'], 'notasecret'
+
       client = Google::APIClient.new
       client.authorization = Signet::OAuth2::Client.new(
         token_credential_uri: 'https://accounts.google.com/o/oauth2/token',

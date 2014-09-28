@@ -27,16 +27,19 @@ post "/upload" do
     token = params['token'] || ''
     user  = User.new(token)
 
-    return "U don't have access bro. - #{token}" unless user.authorized?
+  #  return "U don't have access bro. - #{token}" unless user.authorized?
 
     path = Dir.mktmpdir('upload')
     file_name = params['myfile'][:filename]
     file_path = "#{path}/#{file_name}"
 
+
     File.open(file_path, "w") do |f|
       f.write(params['myfile'][:tempfile].read)
     end
     is_pdf = (File.extname(file_name).downcase == '.pdf')
+
+
     service =  is_pdf ? Service::GoogleDrive.new : Service::Flickr.new
 
     json(service.upload(file_path, file_name))
