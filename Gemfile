@@ -8,8 +8,9 @@ gem 'rake'
 gem 'flickraw', github:'hanklords/flickraw'
 gem 'httparty'
 gem 'google-api-client'
+gem 'mime-types'
 
-group :test do 
+group :test do
   gem 'mocha'
   gem 'activesupport'
   gem 'pry'

@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'sinatra/json'
-require 'haml'
+require 'mime-types'
 require_relative 'lib/flickr.rb'
 require_relative 'lib/user.rb'
 require_relative 'lib/google_drive.rb'
@@ -19,6 +19,7 @@ options "*" do
 end
 
 get "/upload" do
+  require 'haml'
   haml :upload
 end
 
@@ -37,10 +38,10 @@ post "/upload" do
     File.open(file_path, "w") do |f|
       f.write(params['myfile'][:tempfile].read)
     end
-    is_pdf = (File.extname(file_name).downcase == '.pdf')
+    is_image = (MIME::Types.of(file_name).first.media_type == 'image')
 
 
-    service =  is_pdf ? Service::GoogleDrive.new : Service::Flickr.new
+    service =  is_image ? Service::Flickr.new : Service::GoogleDrive.new
 
     json(service.upload(file_path, file_name))
   rescue Exception => e
