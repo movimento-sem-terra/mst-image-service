@@ -19,5 +19,4 @@ group :development, :test do
   gem 'pry-remote', require: false
   gem 'pry', require: false
   gem 'pry-nav', require: false
-  gem 'mina'
 end
