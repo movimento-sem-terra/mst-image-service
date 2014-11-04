@@ -2,16 +2,16 @@ require 'flickraw'
 
 module Service
   class Flickr
-
-    def initialize(config)
-      @api = setup(config)
+    attr_accessor :api
+    def initialize(config, api = nil)
+      @api = api || setup(config["flickr"])
     end
 
     def upload(image_path, file_name)
       begin
         photo_id = @api.upload_photo image_path, :title => file_name, :description => 'File uploaded by cms'
         info = @api.photos.getInfo(:photo_id => photo_id)
-        
+
         large_url = FlickRaw.url_b(info)
         thumbnail_url = FlickRaw.url_t(info)
         medium_url = FlickRaw.url_z(info)
@@ -31,11 +31,11 @@ module Service
 
     private
 
-    def setup
-      FlickRaw.api_key =  config['FLICKR_API_KEY']
-      FlickRaw.shared_secret = config['FLICKR_SHARED_SECRET']
+    def setup(config)
+      FlickRaw.api_key = config['api_key']
+      FlickRaw.shared_secret = config['shared_secret']
       api = FlickRaw::Flickr.new
-      api.get_access_token config['FLICKR_TOKEN'], config['FLICKR_TOKEN_SECRET'], config['FLICKR_VERIFY_CODE']
+      api.get_access_token(config['token'], config['token_secret'], config['verify_code'])
       api
     end
   end

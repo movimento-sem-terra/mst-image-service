@@ -3,12 +3,12 @@ require 'mime-types'
 
 module Service
   class GoogleDrive
-
+    attr_accessor :api
     PDF_THUMBNAIL = 'http://farm4.staticflickr.com/3852/15187675380_7b00f5fdff_b.jpg'
     AUDIO_THUMBNAIL = 'http://farm4.staticflickr.com/3939/15458051067_f2f7afa6e8_b.jpg'
 
-    def initialize(config)
-      @api = setup(config)
+    def initialize(config, api = nil)
+      @api = api || setup(config['google'])
       @drive = @api.discovered_api('drive', 'v2')
     end
 
@@ -58,14 +58,14 @@ module Service
     end
 
     def setup(config)
-      key = OpenSSL::PKey::RSA.new Base64.decode64(config['GOOGLE_API_KEY']), 'notasecret'
+      key = OpenSSL::PKey::RSA.new Base64.decode64(config['api_key']), 'notasecret'
 
       client = Google::APIClient.new
       client.authorization = Signet::OAuth2::Client.new(
         token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
         audience: 'https://accounts.google.com/o/oauth2/token',
         scope: 'https://www.googleapis.com/auth/drive',
-        issuer: config['GOOGLE_EMAIL_ADDRESS'],
+        issuer: config['email_address'],
         signing_key: key)
 
       client.authorization.fetch_access_token!

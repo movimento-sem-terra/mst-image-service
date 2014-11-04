@@ -19,34 +19,32 @@ options "*" do
   response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
   halt HTTP_STATUS_OK
 end
-
+set :environment, :development
 get "/upload" do
   require 'haml'
   haml :upload
 end
 
 post "/upload" do
-  begin
+  # begin
     token = params['token'] || ''
-    
-    user  = User.new(token) 
-    enviromment_config = user.enviromment_config
-    
+    user  = User.new(token)
+    config = user.enviromment_config
+
     path = Dir.mktmpdir('upload')
     file_name = params['myfile'][:filename]
     file_path = "#{path}/#{file_name}"
-
 
     File.open(file_path, "w") do |f|
       f.write(params['myfile'][:tempfile].read)
     end
 
     is_image = (MIME::Types.of(file_name).first.media_type == 'image')
-    service =  is_image ? Service::Flickr.new(user.enviromment_config) : Service::GoogleDrive.new(user.enviromment_config)
+    service =  is_image ? Service::Flickr.new(config) : Service::GoogleDrive.new(config)
     json( service.upload( file_path, file_name ) )
-  rescue Exception => e
-    return e.message
-  end
+  # rescue Exception => e
+  #   return e.message
+  # end
 end
 
 get "/files" do

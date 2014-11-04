@@ -19,9 +19,7 @@ class User
   end
 
   def enviromment_config
-    if authorized?  
-      JSON.parse ENV['CONFIG']
-    end
+    JSON.parse ENV['CONFIG']
   end
 
 end

@@ -17,8 +17,9 @@ class Service::FlickrTest < ActiveSupport::TestCase
     api_photos = mock()
     api_photos.stubs( :getInfo ).returns( info )
     api.stubs( :photos ).returns(api_photos)
-
-    @flickr = Service::Flickr.new(api)
+    
+    
+    @flickr = Service::Flickr.new(mock, api)
   end
 
   test 'return a json with the thumbnail and link url' do
