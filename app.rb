@@ -24,6 +24,10 @@ get "/upload" do
   haml :upload
 end
 
+get '/env'
+  ENV
+end
+
 post "/upload" do
   # begin
     token = params['token'] || ''
