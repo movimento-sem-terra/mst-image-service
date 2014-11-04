@@ -21,8 +21,6 @@ options "*" do
 end
 
 get "/upload" do
-  require 'pry-remote'
-  binding.remote_pry
   require 'haml'
   haml :upload
 end
