@@ -13,6 +13,11 @@ gem 'mime-types'
 group :test do
   gem 'mocha'
   gem 'activesupport'
-  gem 'pry'
-  gem 'pry-nav'
+
+end
+group :development, :test do 
+  gem 'pry-remote', require: false
+  gem 'pry', require: false
+  gem 'pry-nav', require: false
+  gem 'mina'
 end

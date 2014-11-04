@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'sinatra/json'
 require 'mime-types'
+require 'json'
+
 require_relative 'lib/flickr.rb'
 require_relative 'lib/user.rb'
 require_relative 'lib/google_drive.rb'
@@ -19,15 +21,20 @@ options "*" do
 end
 
 get "/upload" do
+  require 'pry-remote'
+  binding.remote_pry
   require 'haml'
   haml :upload
 end
 
+
+   
 post "/upload" do
   begin
     token = params['token'] || ''
     user  = User.new(token)
 
+    token = JSON.parse ENV['MST']
   #  return "U don't have access bro. - #{token}" unless user.authorized?
 
     path = Dir.mktmpdir('upload')
