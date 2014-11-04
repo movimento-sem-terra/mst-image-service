@@ -3,24 +3,15 @@ require 'flickraw'
 module Service
   class Flickr
 
-    #app info
-    API_KEY = ENV['FLICKR_API_KEY']
-    SHARED_SECRET = ENV['FLICKR_SHARED_SECRET']
-
-    #user info
-    TOKEN = ENV['FLICKR_TOKEN']
-    TOKEN_SECRET = ENV['FLICKR_TOKEN_SECRET']
-    VERIFY_CODE = ENV['FLICKR_VERIFY_CODE']
-
-    def initialize(api=nil)
-      @api = api || api_service
-      @api.get_access_token(TOKEN, TOKEN_SECRET, VERIFY_CODE)
+    def initialize(config)
+      @api = setup(config)
     end
 
     def upload(image_path, file_name)
       begin
-        photo_id = @api.upload_photo image_path, :title => file_name, :description => 'This is the description'
+        photo_id = @api.upload_photo image_path, :title => file_name, :description => 'File uploaded by cms'
         info = @api.photos.getInfo(:photo_id => photo_id)
+        
         large_url = FlickRaw.url_b(info)
         thumbnail_url = FlickRaw.url_t(info)
         medium_url = FlickRaw.url_z(info)
@@ -40,10 +31,12 @@ module Service
 
     private
 
-    def api_service
-      FlickRaw.api_key = API_KEY
-      FlickRaw.shared_secret = SHARED_SECRET
-      FlickRaw::Flickr.new
+    def setup
+      FlickRaw.api_key =  config['FLICKR_API_KEY']
+      FlickRaw.shared_secret = config['FLICKR_SHARED_SECRET']
+      api = FlickRaw::Flickr.new
+      api.get_access_token config['FLICKR_TOKEN'], config['FLICKR_TOKEN_SECRET'], config['FLICKR_VERIFY_CODE']
+      api
     end
   end
 end

@@ -28,10 +28,10 @@ end
 post "/upload" do
   begin
     token = params['token'] || ''
-    user  = User.new(token)
-
-  #  return "U don't have access bro. - #{token}" unless user.authorized?
-
+    
+    user  = User.new(token) 
+    enviromment_config = user.enviromment_config
+    
     path = Dir.mktmpdir('upload')
     file_name = params['myfile'][:filename]
     file_path = "#{path}/#{file_name}"
@@ -40,12 +40,10 @@ post "/upload" do
     File.open(file_path, "w") do |f|
       f.write(params['myfile'][:tempfile].read)
     end
+
     is_image = (MIME::Types.of(file_name).first.media_type == 'image')
-
-
-    service =  is_image ? Service::Flickr.new : Service::GoogleDrive.new
-
-    json(service.upload(file_path, file_name))
+    service =  is_image ? Service::Flickr.new(user.enviromment_config) : Service::GoogleDrive.new(user.enviromment_config)
+    json( service.upload( file_path, file_name ) )
   rescue Exception => e
     return e.message
   end

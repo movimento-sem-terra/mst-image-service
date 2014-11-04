@@ -7,16 +7,17 @@ module Service
     PDF_THUMBNAIL = 'http://farm4.staticflickr.com/3852/15187675380_7b00f5fdff_b.jpg'
     AUDIO_THUMBNAIL = 'http://farm4.staticflickr.com/3939/15458051067_f2f7afa6e8_b.jpg'
 
-    def initialize(api=nil, drive=nil)
-      @api = api || api_service
-      @drive = drive || @api.discovered_api('drive', 'v2')
+    def initialize(config)
+      @api = setup(config)
+      @drive = @api.discovered_api('drive', 'v2')
     end
 
     def upload(file_path, file_name)
       content_type = get_content_type(file_name)
+
       file = @drive.files.insert.request_schema.new({
         'title' => file_name,
-        'description' => 'v1d4 l0k4',
+        'description' => 'File uploaded by cms',
         'mimeType' => content_type
       })
 
@@ -56,15 +57,15 @@ module Service
       MIME::Types.of(file_name).first.content_type
     end
 
-    def api_service
-      key = OpenSSL::PKey::RSA.new Base64.decode64(ENV['GOOGLE_API_KEY']), 'notasecret'
+    def setup(config)
+      key = OpenSSL::PKey::RSA.new Base64.decode64(config['GOOGLE_API_KEY']), 'notasecret'
 
       client = Google::APIClient.new
       client.authorization = Signet::OAuth2::Client.new(
         token_credential_uri: 'https://accounts.google.com/o/oauth2/token',
         audience: 'https://accounts.google.com/o/oauth2/token',
         scope: 'https://www.googleapis.com/auth/drive',
-        issuer: ENV['GOOGLE_EMAIL_ADDRESS'],
+        issuer: config['GOOGLE_EMAIL_ADDRESS'],
         signing_key: key)
 
       client.authorization.fetch_access_token!
