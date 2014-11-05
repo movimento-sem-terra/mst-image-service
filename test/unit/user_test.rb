@@ -25,5 +25,12 @@ class UserTest < ActiveSupport::TestCase
       assert user.enviromment_config, result
     end
 
+    it 'return a default configuration when a empty org was send' do
+      user = User.new(nil)
+      result = {flickr:"default", google: "default"}
+
+      assert user.enviromment_config, result
+    end
+
   end
 end

@@ -9,9 +9,7 @@ class User
     result = @config["organizations"].find do |org|
       org["id"] == @organization
     end
-    if result
-      result["data"]
-    else
+    unless result
       result = @config["organizations"].find do |org|
         org["id"] == "*"
       end
