@@ -1,25 +1,21 @@
-require 'httparty'
-
 class User
-  ORGS_ENDPOINT = 'https://api.github.com/user/orgs'
 
-  def initialize token
-    @token = token
+  def initialize organization
+    @organization = organization
+    @config = JSON.parse ENV['CONFIG']
   end
 
-  # def authorized?
-  #   repos = ENV['REPO_ID'].split ','
-  #   response = HTTParty.get(ORGS_ENDPOINT, headers: {
-  #     'Authorization' => "token #{@token}",
-  #     'User-Agent' => 'Application'
-  #   })
-  #   Array(response).flatten.find do |org|
-  #     repos.include? org['id'].to_s
-  #   end
-  # end
-
   def enviromment_config
-    JSON.parse ENV['CONFIG']
+    result = @config["organizations"].find do |org|
+      org["id"] == @organization
+    end
+    if result
+      result["data"]
+    else
+      @config["organizations"].find do |org|
+        org["id"] == "*"
+      end
+    end
   end
 
 end

@@ -27,8 +27,8 @@ end
 
 post "/upload" do
   # begin
-    token = params['token'] || ''
-    user  = User.new(token)
+    organization = params['organization'] || ''
+    user  = User.new(organization)
     config = user.enviromment_config
 
     path = Dir.mktmpdir('upload')
