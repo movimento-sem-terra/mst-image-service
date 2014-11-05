@@ -12,10 +12,10 @@ class User
     if result
       result["data"]
     else
-      @config["organizations"].find do |org|
+      result = @config["organizations"].find do |org|
         org["id"] == "*"
       end
     end
+    result["data"]
   end
-
 end
