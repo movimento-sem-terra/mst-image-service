@@ -26,25 +26,21 @@ end
 
 
 post "/upload" do
-  # begin
-    organization = params['organization'] || ''
-    user  = User.new(organization)
-    config = user.enviromment_config
+  organization = params['organization'] || ''
+  user  = User.new(organization)
+  config = user.enviromment_config
 
-    path = Dir.mktmpdir('upload')
-    file_name = params['myfile'][:filename]
-    file_path = "#{path}/#{file_name}"
+  path = Dir.mktmpdir('upload')
+  file_name = params['myfile'][:filename]
+  file_path = "#{path}/#{file_name}"
 
-    File.open(file_path, "w") do |f|
-      f.write(params['myfile'][:tempfile].read)
-    end
+  File.open(file_path, "w") do |f|
+    f.write(params['myfile'][:tempfile].read)
+  end
 
-    is_image = (MIME::Types.of(file_name).first.media_type == 'image')
-    service =  is_image ? Service::Flickr.new(config) : Service::GoogleDrive.new(config)
-    json( service.upload( file_path, file_name ) )
-  # rescue Exception => e
-  #   return e.message
-  # end
+  is_image = (MIME::Types.of(file_name).first.media_type == 'image')
+  service =  is_image ? Service::Flickr.new(config) : Service::GoogleDrive.new(config)
+  json( service.upload( file_path, file_name ) )
 end
 
 get "/files" do

@@ -17,8 +17,8 @@ class Service::FlickrTest < ActiveSupport::TestCase
     api_photos = mock()
     api_photos.stubs( :getInfo ).returns( info )
     api.stubs( :photos ).returns(api_photos)
-    
-    
+
+
     @flickr = Service::Flickr.new(mock, api)
   end
 
@@ -34,7 +34,7 @@ class Service::FlickrTest < ActiveSupport::TestCase
     FlickRaw.stubs(:url_b).returns('https://wwww.xxxx.com')
     url = @flickr.upload('/var/tmp/010.jpg','010.jpg') #fake file
 
-    assert_match /http:\/\//, url[:thumbnail]
+    assert_match(/http:\/\//, url[:thumbnail])
   end
 
   test 'return url to static image after upload' do
